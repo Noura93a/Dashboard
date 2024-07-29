@@ -1,0 +1,160 @@
+﻿@model IEnumerable< Products>
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col text-center">
+            <h1 class="display-4 "><span class="badge bg-light bordred text-dark">إضافة منتج جديد</span> </h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <button class="btn btn-success" onclick="AddNewItems()">  <i class="fs-4 bi-cart-plus p-2"></i> إضافة منتج </button>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal" tabindex="-1" id="newproducts">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"> إضافة منتج جديد </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="CreateProducts" method="post">
+                    <div class="row">
+                        <div class="col">
+                            <label class="form-label" for="">اسم المنتج</label>
+                            <input type="text" id="newitem" asp-for="@Model.First().Name" class="form-control form-control-sm" />
+                            <span class="text-danger" asp-validation-for="@Model.First().Name"></span>
+                        </div>
+                        <div class="col">
+                            <label class="form-label" for="">وصف المنتج </label>
+                            <input type="text" id="description" asp-for="@Model.First().Description" class="form-control form-control-sm" />
+                            <span class="text-danger" asp-validation-for="@Model.First().Description"></span>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء الأمر </button>
+                        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">إضافة</button>
+                    </div>
+                </form>
+                <div class="row">
+                   
+
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="col">
+    @if (TempData["Add"] != null)
+    {
+        if (@TempData["Add"].ToString() == "True")
+        {
+            <small class="badge bg-success text-center">تمت إضافة المنتج</small>
+
+
+        }
+        else
+        {
+            <small class="badge bg-danger text-center">@TempData["Add"]</small>
+        }
+
+    }
+
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card mt-5">
+            <div class="card-body">
+                <table class="table table-bordered text-center">
+                    <thead class="bg-success text-white">
+                        <tr>
+                            <th>رقم المنتج</th>
+                            <th>اسم المنتج</th>
+                            <th>وصف المنتج</th>
+                            <th colspan="2">الإجراء</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var items in Model)
+                        {
+                            <tr>
+                                <td>@items.Id</td>
+                                <td>@items.Name</td>
+                                <td>@items.Description</td>
+                                <td><a asp-action="DeleteProduct" asp-route-record_no="@items.Id" onclick="return confirm('هل ترغب بحذف المنتج؟');"> <i class="bi bi-trash text-danger"></i></a></td>
+                                <td><a onclick="update(@items.Id)"><i class="bi bi-pencil-square text-success"></i> </a></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+                <div class="row">
+                    <div class="col">
+
+                        @if (TempData["del"] != null)
+                        {
+                            if (@TempData["del"].ToString() == "True")
+                            {
+                                <h1 class="alert alert-success">تم حذف المنتج</h1>
+
+
+                            }
+
+
+                        }
+
+                    </div>
+
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" tabindex="-1" id="editproducts">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"> تعديل بيانات منتج  </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="Updateproduct" method="post">
+                    <div class="row">
+                        <input type="hidden" id="Id" name="Id" class="form-control" />
+                            <div class="col-sm-6">
+                                <label for="" class="form-label">اسم المنتج</label>
+                            <input type="text" id="Name" name="Name" class="form-control" />
+                        
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="" class="form-label">وصف  المنتج</label>
+                            <input type="text" id="Description" name="Description" class="form-control" />
+                            
+                            </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء الأمر </button>
+                        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">تعديل</button>
+                    </div>
+                </form>
+                <div class="row">
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

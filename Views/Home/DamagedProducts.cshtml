@@ -1,0 +1,112 @@
+﻿@model Damegedproducts
+
+@{
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col text-center">
+            <h1 class="display-4 "><span class="badge bg-light bordred text-dark">إضافة منتج تالف</span> </h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <button class="btn btn-success" onclick="AddNewDamagedproduct()">  <i class="fs-4 bi-cart-plus p-2"></i> إضافة منتج تالف </button>
+        </div>
+    </div>
+</div>
+
+<div class="modal" tabindex="-1" id="damaged">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"> إضافة منتج جديد </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="CreateDamagedProducts" method="post">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label class="form-label">اختر المنتج</label>
+                            <select class="form-select" style="direction:ltr" asp-for="ProductId">
+                                @foreach (var item in ViewBag.products)
+                                {
+                                    <option value="@item.Id"> @item.Name</option>
+
+                                }
+                            </select>
+
+                        </div>
+
+                        <div class="col-sm-6">
+                            <label asp-for="Qty" class="form-label">الكمية</label>
+                            <input type="number" asp-for="Qty" class="form-control" />
+                            <span asp-validation-for="Qty" class="text-danger"></span>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء الأمر </button>
+                        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">إضافة</button>
+                    </div>
+                </form>
+                <div class="row">
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="col">
+    @if (TempData["Add"] != null)
+    {
+        if (@TempData["Add"].ToString() == "True")
+        {
+            <small class="badge bg-success text-center">تمت إضافة المنتج</small>
+
+
+        }
+        else
+        {
+            <small class="badge bg-danger text-center">@TempData["Add"]</small>
+        }
+
+    }
+
+
+
+<div class="row mt-4 text-center" style="direction:rtl">
+    <div class="col">
+        <div class="card">
+            <div class="card-body">
+                <table class="table table-bordered text-center">
+                    <thead>
+                        <tr>
+                            <th class="bg-success text-white">رقم المنتج</th>
+                            <th class="bg-success text-white">اسم المنتج</th>
+                            <th class="bg-success text-white">لون المنتج</th>
+                            <th class="bg-success text-white">الكمية</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach (var item in ViewBag.damagedProducts)
+                        {
+                            <tr>
+                                    <td>@item.ProductId</td>
+                                <td>@item.Name</td>
+                                <td>@item.Color</td>
+                                <td>@item.Qty</td>
+                            </tr>
+                        }
+
+
+
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
